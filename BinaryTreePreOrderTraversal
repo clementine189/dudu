@@ -1,1 +1,42 @@
+#include<iostream>
+#include<stack>
+using namespace std;
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+};
+//method 1
+void PreOrderTraversal1(TreeNode* root)
+{
+    if(root == nullptr)
+        return ;
+    cout << root -> val << " ";
+    PreOrderTraversal1(root -> left);
+    PreOrderTraversal1(root -> right);
 
+}
+
+//method 2
+void PreOrderTraversal2(TreeNode* root)
+{
+    TreeNode* p = root;
+    stack<TreeNode*> s;
+    while(p||(!s.empty()))
+    {
+        while(p)
+        {
+            cout << p -> val << " ";
+            s.push(p);
+            p = p -> left;
+        }
+        
+        while(!s.empty())
+        {
+            p = s.top();
+            s.pop();
+            p = p -> right;
+        }       
+        
+    }
+}
