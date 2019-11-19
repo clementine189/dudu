@@ -1,8 +1,108 @@
 #include<iostream>
+#include<vector>
 using namespace std;
+struct ListNode{
+  int var;
+  ListNode* next;
+};
+ListNode* setList(vector<int> num)
+{
+    ListNode* head = nullptr;
+    if(num.size() == 0)
+        return head;
+    ListNode* tmp = new ListNode;
+    head = tmp;
+    for(int i = 0; i < num.size(); i++)
+    {
+        tmp -> var = num[i];
+        if(i == num.size() - 1)
+        {
+            tmp -> next = nullptr;
+            break;
+        }
+        ListNode* tmp1 = new ListNode;
+        tmp -> next = tmp1;
+        tmp = tmp1;
+    }
+    return head;
+}
+void printList(ListNode* head)
+{
+    if(head == nullptr)
+        cout << "it is an empty list" << endl;
+    ListNode* tmp = head;
+    while(tmp != nullptr)
+    {
+        cout << tmp -> var;
+        tmp = tmp -> next;
+        if(tmp != nullptr)
+            cout << " -> ";
+    }
+    cout << endl;
+
+}
+//method 1
+ListNode* reverseList1(ListNode* head)
+{
+    ListNode* right = head;
+    ListNode* left = nullptr;
+    while(right != nullptr)
+    {
+        ListNode* next = right -> next;
+        right -> next = left;
+        left = right;
+        right = next;
+    }
+    return left;
+
+}
+//method 2
+ListNode* process(ListNode* next)
+{
+    ListNode* p = next -> next;
+    if(p == nullptr)
+        return next;
+    ListNode* rear = process(p);
+    p -> next = next;
+    return rear;
+}
+ListNode* reverseList2(ListNode* head)
+{
+    if(head == nullptr || head -> next == nullptr)
+        return head;
+    ListNode* tmp = head -> next;
+    ListNode* res = process(tmp);
+    head -> next = nullptr;
+    tmp -> next = head;
+    return res;
+}
 int main()
 {
-  cout << "hello world!" << endl;\
-  
-  return 0;
+    cout << "please input the length of list: ";
+    int l = 0;
+    cin >> l;
+    cout << "please input this list: ";
+    vector<int> num;
+    for(int i = 0; i < l; i++)
+    {
+        int tmp;
+        cin >> tmp;
+        num.push_back(tmp);
+    }
+    ListNode* head = setList(num);
+    printList(head);
+    
+    cout << "reverse List:";
+    ListNode* res = reverseList1(head);
+    printList(res);
+    head = res;
+    
+    cout << "reverse List:";
+    res = reverseList2(head);
+    printList(res);
+
+
+
+    return 0;
 }
+
